@@ -2,13 +2,8 @@ const geolib = require("geolib");
 const geoapifyService = require('../services/geoapify');
 
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    // let lon1 = cityCoordinates["lon"];
-    // let lat1 = cityCoordinates["lat"];
-    // let lon2 = orderCityCoordinates["lon"];
-    // let lat2 = orderCityCoordinates["lat"];
-
     let R = 6371; // km
-
+    
     let x1 = lat2 - lat1;
     let dLat = (x1 * Math.PI) / 180;
     let x2 = lon2 - lon1;
@@ -51,11 +46,7 @@ module.exports = {
             let fromCoordinates = await geoapifyService.getLocationCoordinator(fromLocation.country, fromLocation.state, fromLocation.city);
             let toCoordinates = await geoapifyService.getLocationCoordinator(toLocation.country, toLocation.state, toLocation.city);
 
-            console.log(fromCoordinates, toCoordinates);
-
-            let distance = calculateDistance(fromCoordinates.latitude, fromCoordinates.longitude, toCoordinates.latitude, toCoordinates.longitude);
-
-            console.log(distance);
+            let distance = calculateDistance(fromCoordinates[0].latitude, fromCoordinates[0].longitude, toCoordinates[0].latitude, toCoordinates[0].longitude);
 
             if (distance) {
                 return res.status(200).json({ IsSuccess: true, Data: distance, Message: 'Distance calculated' });
